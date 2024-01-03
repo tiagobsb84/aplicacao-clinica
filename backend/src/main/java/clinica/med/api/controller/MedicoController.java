@@ -18,10 +18,10 @@ public class MedicoController {
 	@Autowired
 	private MedicoRepository repository;
 	
-	/*@PostMapping
+	@PostMapping
 	public ResponseEntity cadastro(@RequestBody DadosCadastroMedico dados) {
 		var medico = new Medico(dados);
 		repository.save(medico);
 		return ResponseEntity.ok(medico);
-	}*/
+	}
 }
