@@ -1,9 +1,11 @@
 package clinica.med.api.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import clinica.med.api.domain.medico.DadosCadastroMedico;
+import clinica.med.api.domain.medico.DadosListagemMedico;
 import clinica.med.api.domain.medico.Medico;
 import clinica.med.api.repository.MedicoRepository;
 import jakarta.validation.Valid;
@@ -23,6 +26,7 @@ public class MedicoController {
 	private MedicoRepository repository;
 	
 	@PostMapping
+	@Transactional
 	public ResponseEntity cadastro(@RequestBody @Valid DadosCadastroMedico dados) {
 		var medico = new Medico(dados);
 		repository.save(medico);
@@ -30,8 +34,8 @@ public class MedicoController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Medico>> lista() {
-		var lista = repository.findAll();
+	public ResponseEntity<Page<DadosListagemMedico>> lista(@PageableDefault(sort = {"nome"}, size = 10) Pageable page) {
+		var lista = repository.findAll(page).map(DadosListagemMedico::new);
 		return ResponseEntity.ok(lista);
 	}
 }
