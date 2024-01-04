@@ -13,10 +13,13 @@ public record EnderecoDto(
 		
 		@NotBlank
 		String bairro, 
+		
 		@NotBlank
 		String cidade, 
+		
 		@NotBlank
 		String uf,
+		
 		@NotBlank
 		String cep) {
 	
