@@ -35,6 +35,7 @@ public class Paciente {
 	private String email;
 	private String telefone;
 	private String cpf;
+	private Boolean ativo = true;
 	
 	@Embedded
 	private Endereco endereco;
@@ -49,5 +50,10 @@ public class Paciente {
 		if(paciente.endereco() != null) {
 			this.endereco = new Endereco(paciente.endereco());
 		}
+	}
+
+	public void excluir() {
+		this.ativo = false;
+		
 	}
 }
