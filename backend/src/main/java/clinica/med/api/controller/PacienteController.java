@@ -51,7 +51,7 @@ public class PacienteController {
 	public ResponseEntity atualizar(@RequestBody DadosAtualizarPaciente paciente) {
 		var idPaciente = repository.getReferenceById(paciente.id());
 		idPaciente.atualizarInformacao(paciente);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok().body(new DadosDetalhamentoPaciente(idPaciente));
 	}
 	
 	@DeleteMapping(path = "/{id}")
@@ -60,5 +60,11 @@ public class PacienteController {
 		var idPaciente = repository.getReferenceById(id);
 		idPaciente.excluir();
 		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping(path = "/{id}")
+	public ResponseEntity detalhar(@PathVariable Long id) {
+		var idPaciente = repository.getReferenceById(id);
+		return ResponseEntity.ok(new DadosDetalhamentoPaciente(idPaciente));
 	}
 }

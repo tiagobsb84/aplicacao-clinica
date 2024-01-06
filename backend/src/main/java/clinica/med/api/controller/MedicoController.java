@@ -51,7 +51,7 @@ public class MedicoController {
 	public ResponseEntity atualizar(@RequestBody DadosAtualizacaoMedico dados) {
 		var idMedico = repository.getReferenceById(dados.id());
 		idMedico.atualizarInformacao(dados);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok().body(new DadosDetalhadoMedico(idMedico));
 	}
 	
 	@DeleteMapping(path = "/{id}")
@@ -60,5 +60,12 @@ public class MedicoController {
 		var idMedico = repository.getReferenceById(id);
 		idMedico.excluir();
 		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping(path = "/{id}")
+	public ResponseEntity detalhar(@PathVariable Long id) {
+		var idMedico = repository.getReferenceById(id);
+		idMedico.excluir();
+		return ResponseEntity.ok(new DadosDetalhadoMedico(idMedico));
 	}
 }
