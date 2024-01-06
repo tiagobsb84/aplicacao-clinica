@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import clinica.med.api.domain.paciente.DadosAtualizarPaciente;
 import clinica.med.api.domain.paciente.DadosCadastroPaciente;
+import clinica.med.api.domain.paciente.DadosDetalhamentoPaciente;
 import clinica.med.api.domain.paciente.DadosListagemPaciente;
 import clinica.med.api.domain.paciente.Paciente;
 import clinica.med.api.repository.PacienteRepository;
@@ -31,10 +33,11 @@ public class PacienteController {
 	
 	@PostMapping
 	@Transactional
-	public ResponseEntity cadastrar(@RequestBody @Valid  DadosCadastroPaciente dados) {
+	public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroPaciente dados, UriComponentsBuilder uriBuilder) {
 		var paciente = new Paciente(dados);
 		repository.save(paciente);
-		return ResponseEntity.ok(paciente);
+		var uri = uriBuilder.path("/pacientes/{id}").buildAndExpand(paciente.getId()).toUri();
+		return ResponseEntity.created(uri).body(new DadosDetalhamentoPaciente(paciente));
 	}
 	
 	@GetMapping
