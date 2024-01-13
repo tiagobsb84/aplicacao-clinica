@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import clinica.med.api.repository.UsuarioRepository;
 
 @Service
-public class UsuarioService implements UserDetailsService {
+public class AutenticacaoService implements UserDetailsService {
 
 	@Autowired
 	private UsuarioRepository repository;
