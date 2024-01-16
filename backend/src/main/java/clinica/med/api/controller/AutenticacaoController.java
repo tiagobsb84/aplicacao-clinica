@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import clinica.med.api.domain.usuario.DadosAutenticacao;
 import clinica.med.api.domain.usuario.Usuario;
+import clinica.med.api.infra.security.DadosTokenJWT;
 import clinica.med.api.service.TokenService;
 import jakarta.validation.Valid;
 
@@ -29,6 +30,8 @@ public class AutenticacaoController {
 	     var token = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
 	     var authentication = manager.authenticate(token);
 
-	     return ResponseEntity.ok(tokenService.gerarToken((Usuario) authentication.getPrincipal()));       
+	     var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
+	     
+	     return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));       
 	}
 }
